@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applicant.WebApp", "Applicant.WebApp\Applicant.WebApp.csproj", "{418A2C33-8B92-434D-9296-E3FAA09C7584}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Applicant.WebApp", "Applicant.WebApp\Applicant.WebApp.csproj", "{418A2C33-8B92-434D-9296-E3FAA09C7584}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applicant.WebAPI", "Applicant.WebAPI\Applicant.WebAPI.csproj", "{CA427288-DE1A-44AB-9376-D8A19B5C9B89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Applicant.WebAPI", "Applicant.WebAPI\Applicant.WebAPI.csproj", "{CA427288-DE1A-44AB-9376-D8A19B5C9B89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applicant.Infrastructure", "Applicant.Infrastructure\Applicant.Infrastructure.csproj", "{AFB3F73B-F6B6-47ED-BE53-7C9E92DF25A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Applicant.Infrastructure", "Applicant.Infrastructure\Applicant.Infrastructure.csproj", "{AFB3F73B-F6B6-47ED-BE53-7C9E92DF25A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applicant.Core", "Applicant.Core\Applicant.Core.csproj", "{8FCD93B8-BC9B-40D0-AE55-F2FEAAA0EE34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Applicant.Core", "Applicant.Core\Applicant.Core.csproj", "{8FCD93B8-BC9B-40D0-AE55-F2FEAAA0EE34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applicant.Application", "Applicant.Application\Applicant.Application.csproj", "{EDE74EF1-2EF0-4345-8FAE-A909376DE3A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Applicant.Application", "Applicant.Application\Applicant.Application.csproj", "{EDE74EF1-2EF0-4345-8FAE-A909376DE3A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applicant.UnitTest", "Applicant.UnitTest\Applicant.UnitTest.csproj", "{68C0AA16-D9F1-4BCD-BC8C-32D9746340AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{EDE74EF1-2EF0-4345-8FAE-A909376DE3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDE74EF1-2EF0-4345-8FAE-A909376DE3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDE74EF1-2EF0-4345-8FAE-A909376DE3A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C0AA16-D9F1-4BCD-BC8C-32D9746340AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C0AA16-D9F1-4BCD-BC8C-32D9746340AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C0AA16-D9F1-4BCD-BC8C-32D9746340AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C0AA16-D9F1-4BCD-BC8C-32D9746340AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
