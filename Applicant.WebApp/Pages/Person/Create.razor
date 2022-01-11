@@ -1,0 +1,73 @@
+﻿@page "/persons/create"
+@inject IPersonService _personService
+@inject NavigationManager _navigationManager
+
+<div class="row">
+    <div class="col-lg-9">
+        <h1>Create</h1>
+    </div>
+    <div class="col-lg-3 text-right">
+        <a class="btn btn-secondary btn-sm" href="/persons" role="button">Go Back To List</a>
+    </div>
+</div>
+
+@if (person != null)
+{
+<EditForm Model="@person" OnValidSubmit="@SubmitPerson">
+    <div class="form-group">
+        <label><span style="color:red">*</span>Name</label>
+        <InputText class="form-control" @bind-Value="person.Name" />
+    </div>
+    <div class="form-group">
+        <label><span style="color:red">*</span>Address</label>
+        <InputText class="form-control" @bind-Value="person.Address" />
+    </div>
+    <div class="form-group">
+        <label><span style="color:red">*</span>FamilyName</label>
+        <InputText class="form-control" @bind-Value="person.FamilyName" />
+    </div>
+    <div class="form-group">
+        <label><span style="color:red">*</span>CountryOfOrigin</label>
+        <InputText class="form-control" @bind-Value="person.CountryOfOrigin" />
+    </div>
+    <div class="form-group">
+        <label><span style="color:red">*</span>EMailAdress</label>
+        <InputText class="form-control" @bind-Value="person.EMailAdress" />
+    </div>
+    <div class="form-group">
+        <label><span style="color:red">*</span>Age</label>
+        <InputNumber class="form-control" @bind-Value="person.Age" />
+    </div>
+    <div class="form-group">
+        <label><span style="color:red">*</span>Hired</label>
+        <InputCheckbox class="form-control" @bind-Value="person.Hired" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</EditForm>
+    @if (results.Errors.Count > 0)
+    {
+        foreach (var item in results.Errors)
+        {
+            <MudAlert Severity="Severity.Error" >@($"{item.Property}  {item.Message}")</MudAlert>
+        }
+    }
+}
+
+@code {
+
+    PersonCreateCommand person = new PersonCreateCommand();
+    OutputResponse<PersonCreateCommandResult> results ;
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private async void SubmitPerson()
+    {
+        results = await _personService.Create(person);
+        if (results.StatusCode == HttpStatusCode.Created)
+        {
+            _navigationManager.NavigateTo("/persons");
+        }
+    }
+}

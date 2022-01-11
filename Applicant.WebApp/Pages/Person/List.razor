@@ -1,0 +1,69 @@
+﻿@page "/persons"
+@page "/persons/list"
+@inject IPersonService _personService
+
+<div class="row">
+    <div class="col-lg-9">
+        <h1>Persons</h1>
+    </div>
+    <div class="col-lg-3 text-right">
+        <a class="btn btn-success btn-sm" href="/persons/create" role="button">Create New</a>
+    </div>
+</div>
+
+@if (persons != null && persons.Count > 0)
+{
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>FamilyName</th>
+                <th>CountryOfOrigin</th>
+                <th>EMailAdress</th>
+                <th>Age</th>
+                <th>Hired</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in persons)
+            {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Address</td>
+                <td>@item.FamilyName</td>
+                <td>@item.CountryOfOrigin</td>
+                <td>@item.EMailAdress</td>
+                <td>@item.Age</td>
+                <td>@item.Hired</td>
+                <td class="text-right">
+                    <a class="btn btn-secondary btn-sm" href="/persons/edit/@item.Id" role="button">Edit</a>
+                    <button class="btn btn-danger btn-sm" @onclick="@(e => Delete(item.Id))" role="button">Delete</button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+@code {
+    List<PersonSearchResult> persons = new List<PersonSearchResult>();
+    protected override async Task OnInitializedAsync()
+    {
+        var personsSearch = await _personService.Search(new PersonSearchQuery() { });
+        persons = personsSearch?.Model?.Collection;
+    }
+
+    public async Task Delete(int id)
+    {
+
+        var results = await _personService.Delete(new PersonDeleteCommand() {Id= id } );
+        if (results.StatusCode == HttpStatusCode.Created)
+        {
+            var personsSearch = await _personService.Search(new PersonSearchQuery() { });
+            persons = personsSearch?.Model?.Collection;
+        }
+    }
+}

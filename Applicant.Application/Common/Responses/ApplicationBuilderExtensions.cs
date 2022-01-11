@@ -44,7 +44,7 @@ namespace Applicant.Application.Common.Responses
                     {
                         var response = new OutputResponse<string>
                         {
-                            Message = exception.InnerException.Message,
+                            Message = exception.Message,
                             StatusCode = HttpStatusCode.BadRequest,
                             Success = false,
                             Model = null,
