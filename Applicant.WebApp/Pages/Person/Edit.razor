@@ -1,5 +1,6 @@
-﻿@page "/persons/edit/{id:guid}"
+﻿@page "/persons/edit/{id:int}"
 @inject IPersonService _personService
+@inject ICountryService _countryService
 @inject NavigationManager _navigationManager
 @inject IMapper _mapper
 
@@ -41,15 +42,22 @@
         </div>
         <div class="form-group">
             <label><span style="color:red">*</span>Hired</label>
-            <InputCheckbox class="form-control" @bind-Value="person.Hired" />
+            <InputCheckbox @bind-Value="person.Hired" />
         </div>
         <button type="submit" class="btn btn-primary">Edit</button>
     </EditForm>
-    @if (results.Errors.Count > 0)
+    @if (results?.Errors?.Count > 0)
     {
         foreach (var item in results.Errors)
         {
-            <MudAlert Severity="Severity.Error">@($"{item.Property}  {item.Message}")</MudAlert>
+            <MudAlert Severity="MudBlazor.Severity.Error" Square="true" Class="my-2">@($"{item.Property}  {item.Message}")</MudAlert>
+        }
+    }
+    @if (errors.Count > 0)
+    {
+        foreach (var item in errors)
+        {
+            <MudAlert Severity="MudBlazor.Severity.Error" Square="true" Class="my-2">@($"{item.PropertyName}  {item.ErrorMessage}")</MudAlert>
         }
     }
 }
@@ -59,19 +67,25 @@
     public int Id { get; set; }
     PersonEditCommand person = new PersonEditCommand();
     OutputResponse<int> results;
+    List<ValidationFailure> errors = new List<ValidationFailure>();
     protected override async Task OnInitializedAsync()
     {
         person.Id = Id;
         var personDB = await _personService.Get(new PersonGetCommand() { Id = Id });
-        person= _mapper.Map<PersonEditCommand>(personDB);
+        person = _mapper.Map<PersonEditCommand>(personDB.Model);
     }
 
     private async void SubmitPerson()
     {
-        results = await _personService.Edit(person);
-        if (results.StatusCode == HttpStatusCode.Created)
+        errors = (await new PersonEditCommandValidator(_countryService, _personService).ValidateAsync(person)).Errors;
+        if (errors.Count == 0)
         {
-            _navigationManager.NavigateTo("/persons");
+            results = await _personService.Edit(person);
+            if (results.StatusCode == HttpStatusCode.Created)
+            {
+                _navigationManager.NavigateTo("/persons");
+            }
         }
+
     }
 }

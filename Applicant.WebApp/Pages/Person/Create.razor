@@ -1,5 +1,6 @@
 ﻿@page "/persons/create"
 @inject IPersonService _personService
+@inject ICountryService _countryService
 @inject NavigationManager _navigationManager
 
 <div class="row">
@@ -13,42 +14,49 @@
 
 @if (person != null)
 {
-<EditForm Model="@person" OnValidSubmit="@SubmitPerson">
-    <div class="form-group">
-        <label><span style="color:red">*</span>Name</label>
-        <InputText class="form-control" @bind-Value="person.Name" />
-    </div>
-    <div class="form-group">
-        <label><span style="color:red">*</span>Address</label>
-        <InputText class="form-control" @bind-Value="person.Address" />
-    </div>
-    <div class="form-group">
-        <label><span style="color:red">*</span>FamilyName</label>
-        <InputText class="form-control" @bind-Value="person.FamilyName" />
-    </div>
-    <div class="form-group">
-        <label><span style="color:red">*</span>CountryOfOrigin</label>
-        <InputText class="form-control" @bind-Value="person.CountryOfOrigin" />
-    </div>
-    <div class="form-group">
-        <label><span style="color:red">*</span>EMailAdress</label>
-        <InputText class="form-control" @bind-Value="person.EMailAdress" />
-    </div>
-    <div class="form-group">
-        <label><span style="color:red">*</span>Age</label>
-        <InputNumber class="form-control" @bind-Value="person.Age" />
-    </div>
-    <div class="form-group">
-        <label><span style="color:red">*</span>Hired</label>
-        <InputCheckbox class="form-control" @bind-Value="person.Hired" />
-    </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-</EditForm>
-    @if (results.Errors.Count > 0)
+    <EditForm Model="@person" OnValidSubmit="@SubmitPerson">
+        <div class="form-group">
+            <label><span style="color:red">*</span>Name</label>
+            <InputText class="form-control" @bind-Value="person.Name" />
+        </div>
+        <div class="form-group">
+            <label><span style="color:red">*</span>Address</label>
+            <InputText class="form-control" @bind-Value="person.Address" />
+        </div>
+        <div class="form-group">
+            <label><span style="color:red">*</span>FamilyName</label>
+            <InputText class="form-control" @bind-Value="person.FamilyName" />
+        </div>
+        <div class="form-group">
+            <label><span style="color:red">*</span>CountryOfOrigin</label>
+            <InputText class="form-control" @bind-Value="person.CountryOfOrigin" />
+        </div>
+        <div class="form-group">
+            <label><span style="color:red">*</span>EMailAdress</label>
+            <InputText class="form-control" @bind-Value="person.EMailAdress" />
+        </div>
+        <div class="form-group">
+            <label><span style="color:red">*</span>Age</label>
+            <InputNumber class="form-control" @bind-Value="person.Age" />
+        </div>
+        <div class="form-group">
+            <label><span style="color:red">*</span>Hired</label>
+            <InputCheckbox @bind-Value="person.Hired" />
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </EditForm>
+    @if (results?.Errors?.Count > 0)
     {
         foreach (var item in results.Errors)
         {
-            <MudAlert Severity="Severity.Error" >@($"{item.Property}  {item.Message}")</MudAlert>
+            <MudAlert Severity="MudBlazor.Severity.Error" Square="true" Class="my-2">@($"{item.Property}  {item.Message}")</MudAlert>
+        }
+    }
+    @if (errors.Count > 0)
+    {
+        foreach (var item in errors)
+        {
+            <MudAlert Severity="MudBlazor.Severity.Error" Square="true" Class="my-2">@($"{item.PropertyName}  {item.ErrorMessage}")</MudAlert>
         }
     }
 }
@@ -56,7 +64,8 @@
 @code {
 
     PersonCreateCommand person = new PersonCreateCommand();
-    OutputResponse<PersonCreateCommandResult> results ;
+    OutputResponse<PersonCreateCommandResult> results;
+    List<ValidationFailure> errors = new List<ValidationFailure>();
     protected override async Task OnInitializedAsync()
     {
 
@@ -64,10 +73,14 @@
 
     private async void SubmitPerson()
     {
-        results = await _personService.Create(person);
-        if (results.StatusCode == HttpStatusCode.Created)
+        errors = (await new PersonCreateCommandValidator(_countryService).ValidateAsync(person)).Errors;
+        if (errors.Count==0)
         {
-            _navigationManager.NavigateTo("/persons");
+            results = await _personService.Create(person);
+            if (results.StatusCode == HttpStatusCode.Created)
+            {
+                _navigationManager.NavigateTo("/persons");
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Applicant.Application.Common.Mappings;
+using Applicant.Application.Components.Persons.Edit;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Applicant.Application.Components.Persons.Get
         public void Mapping(Profile profile)
         {
             profile.CreateMap< Applicant.Core.Entities.Person, PersonGetCommandResult >().ReverseMap();
+            profile.CreateMap<PersonEditCommand, PersonGetCommandResult>().ReverseMap();
         }
     }
 }
